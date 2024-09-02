@@ -14,18 +14,14 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "BookingsFactSynapse",
+						"referenceName": "FactTable",
 						"type": "DatasetReference"
 					},
-					"name": "synapseforlookup"
+					"name": "source2"
 				}
 			],
 			"sinks": [
 				{
-					"dataset": {
-						"referenceName": "BookingsFactSynapse",
-						"type": "DatasetReference"
-					},
 					"name": "synapsefactwrite",
 					"rejectedDataLinkedService": {
 						"referenceName": "AzureDataLakeStorage1",
@@ -91,7 +87,7 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table',",
-				"     staged: true) ~> synapseforlookup",
+				"     staged: true) ~> source2",
 				"BookingData split(check_out_date<check_in_date,",
 				"     disjoint: false) ~> DataQualityCheck@(BadRecords, AcceptedRecords)",
 				"DataQualityCheck@AcceptedRecords derive(stay_duration = (toTimestamp(check_out_date) - toTimestamp(check_in_date))/86400000,",
@@ -110,7 +106,7 @@
 				"          amount = amount,",
 				"          currency = currency,",
 				"          timestamp = timestamp) ~> derivedColumns",
-				"derivedColumns, synapseforlookup lookup(derivedColumns@booking_id == synapseforlookup@booking_id,",
+				"derivedColumns, source2 lookup(derivedColumns@booking_id == synapseforlookup@booking_id,",
 				"     multiple: false,",
 				"     pickup: 'first',",
 				"     desc(synapseforlookup@timestamp, true),",
@@ -139,35 +135,9 @@
 				"     skipDuplicateMapOutputs: false) ~> finalcolumns",
 				"finalcolumns sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     input(",
-				"          booking_id as string,",
-				"          property_id as string,",
-				"          customer_id as integer,",
-				"          owner_id as string,",
-				"          check_in_date as date,",
-				"          check_out_date as date,",
-				"          booking_date as timestamp,",
-				"          amount as double,",
-				"          currency as string,",
-				"          city as string,",
-				"          country as string,",
-				"          full_address as string,",
-				"          stay_duration as long,",
-				"          booking_year as integer,",
-				"          booking_month as integer,",
-				"          timestamp as timestamp",
-				"     ),",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:true,",
-				"     upsertable:false,",
-				"     keys:['booking_id'],",
-				"     format: 'table',",
-				"     staged: true,",
-				"     allowCopyCommand: true,",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> synapsefactwrite"
+				"     format: 'table') ~> synapsefactwrite"
 			]
 		}
 	}
