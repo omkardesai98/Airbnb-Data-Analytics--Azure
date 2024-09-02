@@ -82,10 +82,6 @@
 				"name": "account_status",
 				"type": "nvarchar"
 			}
-		],
-		"typeProperties": {
-			"schema": "airbnb",
-			"table": "customer_dim"
-		}
+		]
 	}
 }
