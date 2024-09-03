@@ -1,0 +1,14 @@
+{
+	"name": "synapsenew",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDW",
+		"typeProperties": {
+			"server": "synapse-omkar.sql.azuresynapse.net",
+			"database": "airbnbsqlpool",
+			"encrypt": "mandatory",
+			"trustServerCertificate": true,
+			"authenticationType": "SystemAssignedManagedIdentity"
+		}
+	}
+}
