@@ -1,5 +1,5 @@
 {
-	"name": "CosmosDbNoSqlContainer1",
+	"name": "CosmosBookingdata",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "CosmosDbNoSqlairbnb",
