@@ -1,5 +1,5 @@
 {
-	"name": "analytics2fact",
+	"name": "BookingFactSynapse",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSynapseAnalytics1",
